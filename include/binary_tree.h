@@ -23,7 +23,7 @@ class binary_tree
 
         void addWord(std::string word);
         void deleteWord(std::string word);
-        node* findWord(std::string word);
+        void findWord(std::string word);
         void inorder();
         void preorder();
         void postorder();

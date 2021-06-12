@@ -2,7 +2,7 @@
 
 unordered_table::unordered_table()
 {
-    std::cout << "Constructor." << std::endl;
+    std::cout << "Unordered table constructor." << std::endl;
     table = new data[0];
     totalSize = 0;
 }

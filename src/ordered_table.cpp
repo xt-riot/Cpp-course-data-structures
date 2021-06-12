@@ -2,7 +2,7 @@
 
 ordered_table::ordered_table()
 {
-    std::cout << "Constructor." << std::endl;
+    std::cout << "Ordered table constructor." << std::endl;
     table = new data[0];
     totalSize = 0;
 }

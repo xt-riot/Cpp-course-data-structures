@@ -1,10 +1,83 @@
 #include "binary_tree.h"
 
+/*  ============================================================ *
+ *                      PUBLIC CLASSES                           *
+ *  ============================================================ */
+
 binary_tree::binary_tree()
 {
-    std::cout << "Constructor." << std::endl;
+    std::cout << "Binary Search Tree constructor." << std::endl;
     tree = nullptr;
 }
+
+void binary_tree::addWord(std::string word)
+{
+    data temp;
+    temp.occurencies = 1;
+    temp.word = word;
+
+    if (word.empty()) return;
+
+    if(tree == nullptr) {
+        //std::cout << "Tree is empty - inserting " << word << " at root" << std::endl;
+        tree = newPointer(temp, tree);
+    }
+    else
+        tree = insertNewNode(temp, tree);
+}
+
+void binary_tree::deleteWord(std::string word)
+{
+    //std::cout << "Trying to find the node holding the word " << word << " in the tree..." << std::endl;
+    tree = deleteNode(word, tree);
+}
+
+
+void binary_tree::findWord(std::string word)
+{
+    node *temp = searchNode(word, tree);
+    if(temp != nullptr)
+        std::cout << "Requested word " << temp->table.word << " was found " << temp->table.occurencies << " time(s) in the text." << std::endl;
+    else
+        std::cout << "Requested word " << word << " was not found in the tree." << std::endl;
+}
+
+void binary_tree::postorder()
+{
+    std::cout << "Post-order traversal:" << std::endl;
+    postorder(tree->left);
+    postorder(tree->right);
+    std::cout << "\troot " << tree->table.word << " has " << tree->table.occurencies << " occurencies." << std::endl;
+
+}
+
+void binary_tree::inorder()
+{
+    std::cout << "In-order traversal:" << std::endl;
+    inorder(tree->left);
+    std::cout << "\troot " << tree->table.word << " has " << tree->table.occurencies << " occurencies." << std::endl;
+    inorder(tree->right);
+}
+
+void binary_tree::preorder()
+{
+    std::cout << "Pre-order traversal:" << std::endl;
+    std::cout << "\troot " << tree->table.word << " has " << tree->table.occurencies << " occurencies." << std::endl;
+    preorder(tree->left);
+    preorder(tree->right);
+}
+
+
+binary_tree::~binary_tree()
+{
+    deconstructor(tree->left);
+    deconstructor(tree->right);
+    delete tree;
+}
+
+/*  ============================================================ *
+ *                  PROTECTED CLASSES                            *
+ *  ============================================================ */
 
 node* binary_tree::newPointer(data key, node *root)
 {
@@ -39,21 +112,6 @@ node* binary_tree::insertNewNode(data key, node *root)
     return root;
 }
 
-void binary_tree::addWord(std::string word)
-{
-    data temp;
-    temp.occurencies = 1;
-    temp.word = word;
-
-    if (word.empty()) return;
-
-    if(tree == nullptr) {
-        //std::cout << "Tree is empty - inserting " << word << " at root" << std::endl;
-        tree = newPointer(temp, tree);
-    }
-    else
-        tree = insertNewNode(temp, tree);
-}
 node* binary_tree::deleteNode(std::string key, node *root)
 {
     if(root == nullptr) return nullptr;
@@ -91,18 +149,11 @@ node* binary_tree::deleteNode(std::string key, node *root)
                     insertNewNode(temp->right->table, root);
                 }
                 // delete the temporary node
-                deconstructor(temp);
+                root->right = deleteNode(temp->table.word, root->right);
             }
         }
     }
-
     return root;
-}
-
-void binary_tree::deleteWord(std::string word)
-{
-    //std::cout << "Trying to find the node holding the word " << word << " in the tree..." << std::endl;
-    tree = deleteNode(word, tree);
 }
 
 node* binary_tree::searchNode(std::string key, node* root)
@@ -121,11 +172,6 @@ node* binary_tree::searchNode(std::string key, node* root)
         //std::cout << "\t" << key << " was found in the tree." << std::endl;
         return root;
     }
-}
-
-node* binary_tree::findWord(std::string word)
-{
-    return searchNode(word, this->tree);
 }
 
 void binary_tree::inorder(node *root)
@@ -161,30 +207,6 @@ void binary_tree::postorder(node *root)
     postorder(root->left);
     postorder(root->right);
     std::cout << "\t" << root->table.word << " has " << root->table.occurencies << " occurencies." << std::endl;
-}
-
-void binary_tree::postorder()
-{
-    std::cout << "Post-order traversal:" << std::endl;
-    postorder(tree);
-}
-void binary_tree::inorder()
-{
-    std::cout << "In-order traversal:" << std::endl;
-    inorder(tree);
-}
-void binary_tree::preorder()
-{
-    std::cout << "Pre-order traversal:" << std::endl;
-    preorder(tree);
-}
-
-
-binary_tree::~binary_tree()
-{
-    deconstructor(tree->left);
-    deconstructor(tree->right);
-    delete tree;
 }
 
 void binary_tree::deconstructor(node* root)
