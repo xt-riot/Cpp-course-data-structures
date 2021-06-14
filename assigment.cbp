@@ -36,13 +36,13 @@
 		</Compiler>
 		<Unit filename="include/AVL_tree.h" />
 		<Unit filename="include/binary_tree.h" />
-		<Unit filename="include/hash_map.h" />
+		<Unit filename="include/hash_table.h" />
 		<Unit filename="include/ordered_table.h" />
 		<Unit filename="include/unordered_table.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/AVL_tree.cpp" />
 		<Unit filename="src/binary_tree.cpp" />
-		<Unit filename="src/hash_map.cpp" />
+		<Unit filename="src/hash_table.cpp" />
 		<Unit filename="src/ordered_table.cpp" />
 		<Unit filename="src/unordered_table.cpp" />
 		<Extensions />
