@@ -12,7 +12,6 @@ class ordered_table():  Implementation of the ordered table data structure. With
         -findWord(std::string):     Find a word(if it exists) in the table. Returns the position.
         -printTable():              Print the whole table
         -getDesc():                 Return the description of the structure
-
     protected:
         -findWord(std::string, int, int, bool): Helping function to search the table. It splits the table into 2
                                                 if the word is in the middle, then return the position, otherwise
@@ -23,7 +22,6 @@ class ordered_table():  Implementation of the ordered table data structure. With
         -totalSize:                             The table's current size
         -table:                                 The table(1-D array of struct data)
         -description:                           A string that holds the name of the current class.
-
     Helping data structure:
         struct data:        A data structure storing the word and how many times it's found in the text.
 *******************************************************************************************************************/
@@ -48,20 +46,26 @@ std::string ordered_table::getDesc()
 
 void ordered_table::addWord(std::string word)
 {
-    if(word.empty()) return; // if the word is empty, do nothing
+    // if the word is empty, do nothing
+    if(word.empty() || int(word[0] < 97)) return;
     //std::cout << "Adding \"" << word << "\"."<<std::endl;
     int pos;
-    if(totalSize == 0) { // if the total size of the table is 0, it means it holds no words
+    // if the total size of the table is 0, it means it holds no words
+    if(totalSize == 0) {
         //std::cout << "Total size = 0" << std::endl;
-        totalSize++; // therefore, increment the size
-        delete []table; // make a new table and add the word
+        // therefore, increment the size
+        totalSize++;
+        // make a new table and add the word
+        delete []table;
         table = new data[1];
         table[0].word = word;
         table[0].occurencies = 1;
         return;
     }
-    else pos = findWordProt(word, 0, totalSize, true); // if the size is > 0, search for the word
-    if(pos != -1) { // in case it is found, just add the occurencies and return
+    else pos = findWordProt(word, 0, totalSize); // if the size is > 0, search for the word
+
+    // in case it is found, just add the occurencies and return
+    if(pos != -1) {
         //std::cout << word << " exists and was found at position" << pos << " another " << table[pos].occurencies << " times." << std::endl;
         table[pos].occurencies++;
         return;
@@ -70,9 +74,12 @@ void ordered_table::addWord(std::string word)
     totalSize++; // we gotta make a new table with 1 more slot
     data *temp = new data[totalSize]; // create the helping table
     int currPos = 0;
-    while (currPos < totalSize-1) { // start iterating through the table
-        if(table[currPos].word.compare(word) > 0) // if we find a word that is smaller than the given word
+    // start iterating through the table
+    while (currPos < totalSize-1) {
+        // if we find a word that is smaller than the given word
+        if(table[currPos].word.compare(word) > 0) {
             break;
+        }
         //std::cout << "\t\tAdding " << table[currPos].word << " because its smaller than " << word << std::endl;
         // as long as the given word is smaller than the current position
         // add the words to the helping table and increment the position
@@ -86,13 +93,16 @@ void ordered_table::addWord(std::string word)
     temp[currPos].word = word; // this is the position we must add the word
     temp[currPos++].occurencies = 1;
     //std::cout << "\t\tAdding the rest" << std::endl;
-    for(int i = currPos; i < totalSize; i++) { // for the remaining words in the main table
-        temp[i] = table[i-1]; // just copy the words
+    // for the remaining words in the main table
+    for(int i = currPos; i < totalSize; i++) {
+        // just copy the words
+        temp[i] = table[i-1];
     }
     delete []table; // re-create the table with the new size
     table = new data[totalSize];
     for(int i = 0; i < totalSize; i++) {
-        table[i] = temp[i]; // just copy every word in the helping table
+        // just copy every word in the helping table
+        table[i] = temp[i];
     }
     delete []temp;
     //std::cout << word << " was added." << std::endl;
@@ -100,12 +110,16 @@ void ordered_table::addWord(std::string word)
 
 bool ordered_table::deleteWord(std::string word)
 {
-    int pos = findWordProt(word, 0, totalSize, false); // search for the word
+    int pos = findWordProt(word, 0, totalSize); // search for the word
     int currPos = 0;
-    if(pos != -1) { // if the word is found
-        data *temp = new data[totalSize-1]; // decrease the total size
-        for(int i = 0; i < totalSize; i++) { // for every word in the table
-            if(i == pos) // that is not the same as the word we are about to delete
+    // if the word is found
+    if(pos != -1) {
+        // decrease the total size
+        data *temp = new data[totalSize-1];
+        // for every word in the table
+        for(int i = 0; i < totalSize; i++) {
+            // that is not the same as the word we are about to delete
+            if(i == pos)
                 continue;
             temp[currPos] = table[i]; // copy it in the helping table
             //std::cout << "Adding " << table[i].word << " to temp at position " << currPos << " from table's position" << i << " : " << temp[currPos].word << " // " << temp[currPos].occurencies << std::endl;
@@ -114,7 +128,8 @@ bool ordered_table::deleteWord(std::string word)
         delete []table; // delete the table and re-create it with 1 less slot
         table = new data[--totalSize];
         for(int i = 0; i < totalSize; i++) {
-            table[i] = temp[i]; // add all the words from the helping table
+            // add all the words from the helping table
+            table[i] = temp[i];
         }
         delete []temp;
         //std::cout << word << " was found with " << table[pos].occurencies << " occurencies and was deleted." << std::endl;
@@ -126,9 +141,10 @@ bool ordered_table::deleteWord(std::string word)
 
 int ordered_table::findWord(std::string word)
 {
-    int temp = findWordProt(word, 0, totalSize, true);// find the word
+    int temp = findWordProt(word, 0, totalSize);// find the word
 
     // this function is called by main, therefore output to the console
+    //std::cout << temp << std:: endl;
     if(temp == -1) std::cout << "Requested word " << word << " was not found in the table." << std::endl;
     else std::cout << "Requested word " << table[temp].word << " was found " << table[temp].occurencies << " time(s) in the text." << std::endl;
     return temp;
@@ -167,18 +183,23 @@ ordered_table::~ordered_table()
 // it splits the table into two and checks in which of the two tables it must continue searching
 // until the word is found. Reminding, the table is ordered, therefore each word that is bigger than
 // some other word can only be on the right of the latter.
-int ordered_table::findWordProt(std::string word, int start, int finish, bool show = true)
+int ordered_table::findWordProt(std::string word, int start, int finish)
 {
     int middle = (start + finish) / 2; // get the middle of the table
-    //if (finish - start == 0 && table[middle].word.compare(word) != 0) return -1;
+    //std::cout << middle << " // " << word << " // " << start << " // " << finish << " // " << table[middle].word.compare(word) << std::endl;
+    if (middle == start && table[middle].word.compare(word) != 0)
+            return -1;
 
     // if the middle is well defined within the size of the table
-    if(table[middle].word.compare(word) == 0 && middle > start && middle < finish) // if the current slot holds the given word
+    if(table[middle].word.compare(word) == 0 && middle >= start && middle < finish) { // if the current slot holds the given word
         return middle; // return the position
-    else if(table[middle].word.compare(word) < 0 && middle > start && middle < finish) // if the given word is smaller than the current word
-        findWordProt(word, start, middle, false); // search in the first half of the table
-    else if(table[middle].word.compare(word) > 0 && middle > start && middle < finish) // if the given word is bigger than the current word
-        findWordProt(word, middle, finish, false); // search in the second half of the table
+    }
+    else if(table[middle].word.compare(word) > 0 && middle >= start && middle < finish) { // if the given word is smaller than the current word
+        return findWordProt(word, start, middle); // search in the first half of the table
+    }
+    else if(table[middle].word.compare(word) < 0 && middle >= start && middle < finish) { // if the given word is bigger than the current word
+        return findWordProt(word, middle, finish); // search in the second half of the table
+    }
 
     return -1; // we did not find the word and we can't divide the table anymore - return -1
 }

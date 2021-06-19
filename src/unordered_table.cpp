@@ -46,7 +46,7 @@ std::string unordered_table::getDesc()
 
 void unordered_table::addWord(std::string word)
 {
-    if(word.empty()) return; // if the word is empty, do nothing
+    if(word.empty() || int(word[0] < 97)) return; // if the word is empty, do nothing
     //std::cout << "Adding \"" << word << "\"."<<std::endl;
     int pos;
     if(totalSize == 0) { // if the total size of the table is 0, it means it holds no words
@@ -58,7 +58,7 @@ void unordered_table::addWord(std::string word)
         table[0].occurencies = 1;
         return;
     }
-    else pos = findWord(word); // if the size is > 0, search for the word
+    else pos = findWordProt(word); // if the size is > 0, search for the word
     if(pos != -1) { // in case it is found, just add the occurencies and return
         //std::cout << word << " exists and was found at position" << pos << " another " << table[pos].occurencies << " times." << std::endl;
         table[pos].occurencies++;
@@ -107,7 +107,7 @@ bool unordered_table::deleteWord(std::string word)
 }
 
 int unordered_table::findWord(std::string word) {
-    int temp = findWord(word); // find the word
+    int temp = findWordProt(word); // find the word
 
     // this function is called by main, therefore output to the console
     if(temp == -1) std::cout << "Requested word " << word << " was not found in the table." << std::endl;

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 
 struct dataHM {
     std::string word;
@@ -15,8 +16,8 @@ class hash_table
         hash_table();
         virtual ~hash_table();
 
-        void addWord(std::string word);
-        int findWord(std::string word);
+        void addWord(std::string);
+        int findWord(std::string);
         void printTable();
         std::string getDesc();
 
@@ -24,6 +25,7 @@ class hash_table
         int hashFunc(int letter);
         dataHM* reconstruct();
         dataHM* sortSlots(dataHM *tab);
+        int findWordProt(std::string);
 
     private:
         dataHM *table;

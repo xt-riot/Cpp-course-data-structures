@@ -19,7 +19,7 @@ class ordered_table
         std::string getDesc();
 
     protected:
-        int findWordProt(std::string, int, int, bool);
+        int findWordProt(std::string, int, int);
 
     private:
         int totalSize;

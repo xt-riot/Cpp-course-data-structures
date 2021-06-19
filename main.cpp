@@ -163,6 +163,7 @@ int main()
     ordered_table ortab   = ordered_table();
     binary_tree btree     = binary_tree();
     AVL_tree atree        = AVL_tree();
+    hash_table htab = hash_table();
 
     // load the text file in every data structure
     cout << "Loading the words into the binary tree." << endl;
@@ -170,11 +171,11 @@ int main()
     cout << "Loading the words into the AVL tree." << endl;
     loadWords(atree);
     cout << "Loading the words into the ordered table." << endl;
-    //loadWords(ortab);
+    loadWords(ortab);
     cout << "Loading the words into the unordered table." << endl;
-    //loadWords(untab);
-
-    ortab.printTable();
+    loadWords(untab);
+    cout << "Loading the words into the hash table." << endl;
+    //loadWords(htab);
 
     // find every word in the randomStrings array - use every structure
     cout << "Start searching for the random words in the binary tree." << endl;
@@ -182,9 +183,11 @@ int main()
     cout << "Start searching for the random words in the AVL tree." << endl;
     findWords(atree, randomStrings);
     cout << "Start searching for the random words in the ordered table." << endl;
-    //findWords(ortab, randomStrings);
+    findWords(ortab, randomStrings);
     cout << "Start searching for the random words in the unordered table." << endl;
-    //findWords(untab, randomStrings);
+    findWords(untab, randomStrings);
+    cout << "Start searching for the random words in the hash table." << endl;
+    //findWords(htab, randomStrings);
 
     return 0;
 }

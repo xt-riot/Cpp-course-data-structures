@@ -77,10 +77,11 @@ std::string hash_table::getDesc()
 
 void hash_table::addWord(std::string word)
 {
-    if (word.empty()) return;
-    int found = findWord(word); // search the word before doing anything
+    if (word.empty() || int(word[0]) < 97) return;
+    //std::cout << "Adding \"" << word << "\"."<<std::endl;
+    int found = findWordProt(word); // search the word before doing anything
     if(found != -1) { // if we find it, just increase the occurencies and return
-        std::cout << "Increasing the total times we've seen the word." << std::endl;
+        //std::cout << "Increasing the total times we've seen the word." << std::endl;
         table[found].occurencies++;
         return;
     }
@@ -93,7 +94,7 @@ void hash_table::addWord(std::string word)
     // linear probing
     while(pos < hashFuncTable[finish] && start < totalSize) {
         if( table[pos].word.empty() ) {
-            std::cout << "Adding the word " << word << std::endl;
+            //std::cout << "Adding the word " << word << std::endl;
             // we found an empty slot
             table[pos].word = word;
             table[pos].occurencies = 1;
@@ -110,9 +111,9 @@ void hash_table::addWord(std::string word)
     if(pos < totalSize && table[pos].word.empty() ) {
         table[pos].word = word;
         table[pos].occurencies = 1;
-        std::cout << "\tAdding the word " << word << " but, first, we have to move next letter's start." << std::endl;
+        //std::cout << "\tAdding the word " << word << " but, first, we have to move next letter's start." << std::endl;
         hashFuncTable[finish] = ++pos;
-        std::cout << hashFuncTable[finish] << std::endl;
+        //std::cout << hashFuncTable[finish] << std::endl;
         table = sortSlots(table); // sort the new word
         return;
     }
@@ -123,55 +124,31 @@ void hash_table::addWord(std::string word)
 
 int hash_table::findWord(std::string word)
 {
-    if(word.empty())
-        return -1;
-    int letter = int(word[0]); // get the integer value of the first letter of the word
-    int start = hashFunc(letter); // get the starting position of the subtable
-    int finish = hashFunc(letter + 1); // get the finish position of the subtable
-    int middle = hashFuncTable[start] + ((hashFuncTable[finish] - hashFuncTable[start]) / 2); // where should we start searching the subtable
-    int step = 0;
-    // we must check if the table's middle position is an empty slot - if so, check the previous positions until we find the biggest word
-    while(table[middle].word.empty())
-        middle--;
-
-    // check if the current hashed word is the one we are searching for.
-    if (table[middle].word.compare(word) == 0) {
-        std::cout << "We found the word " << word << " at position: " << middle << " of the table. It is found " << table[middle].occurencies << " times in the text." << std::endl;
-        return middle;
-    }
-    else {
-        // we did not find the word at the current position - check if the given word is less than the current and adjust the step accordingly
-        //std::cout << "We did not find the word " << word << std::endl;
-        if ( table[middle].word.compare(word) < 0 && !table[middle].word.empty())
-            step = 1; // the word, we are looking for, is in the next positions
-        else if (!table[middle].word.empty() && table[middle].word.compare(word) > 0)
-            step = -1; // the word, we are looking for, is in the previous positions
-
-        middle += step;
-        // checking if the position to be search doesn't exceed the table's size or the starting/finishing position of the words starting with the same letter
-        while(middle < totalSize && middle >= hashFuncTable[start] && middle < hashFuncTable[finish] && !table[middle].word.empty()) {
-            // searching in the table
-            if(table[middle].word.compare(word) == 0) {
-                // we found the word
-                std::cout << "We found the word " << word << " at position: " << middle << " of the table. It is found " << table[middle].occurencies << " times in the text." << std::endl;
-                return middle;
-            }
-            // we did not find the word - go to the next position
-            middle += step;
-        }
-    }
-    // the word is not in the subtable, therefore the word doesn't exist in our hash table.
-    return -1;
+    int temp = findWordProt(word);
+    if(temp == -1) std::cout << "Requested word " << word << " was not found in the table." << std::endl;
+    else std::cout << "Requested word " << table[temp].word << " was found " << table[temp].occurencies << " time(s) in the text." << std::endl;
+    return temp;
 }
 
 void hash_table::printTable()
 {
+    std::streambuf *psbuf, *backup; // used to interchange between console output and file output
+    std::ofstream filestr; // the handle to file output
+    filestr.open ("./out/hash-table.txt", std::ios::out);
+    backup = std::cout.rdbuf(); // take a backup of the cout buffer
+    psbuf = filestr.rdbuf();   // get the file's buffer
+    std::cout.rdbuf(psbuf);    // assign the file's buffer to cout - from now on, if we want to write something to the console,
+                               // it will be re-directed to the output file
+
+    // BEGIN WRITING EVERY WORD IN THE TABLE
     std::cout << std::endl << "Printing the hash table:" << std::endl;
     for(int i = 0; i < ALPHABET_TOTALNUMBER-1; i++) {
         for(int j = hashFuncTable[i]; j < hashFuncTable[i+1]; j++)
             if(table[j].word.empty()) continue;
             else std::cout << "\t" << table[j].word << std::endl;
     }
+    filestr.close(); // close the output file
+    std::cout.rdbuf(backup); // restore the buffer to cout - from now on, whatever we write with cout, it will be directed to the console
 }
 
 hash_table::~hash_table()
@@ -269,4 +246,45 @@ dataHM* hash_table::reconstruct()
     }
     hashFuncTable = newSlots; // copy the new startin/finishing positions of the subtables
     return table;
+}
+
+int hash_table::findWordProt(std::string word)
+{
+    if(word.empty() || int(word[0]) < 97)
+        return -1;
+    int letter = int(word[0]); // get the integer value of the first letter of the word
+    int start = hashFunc(letter); // get the starting position of the subtable
+    int finish = hashFunc(letter + 1); // get the finish position of the subtable
+    int middle = hashFuncTable[start] + ((hashFuncTable[finish] - hashFuncTable[start]) / 2); // where should we start searching the subtable
+    int step = 0;
+
+    // we must check if the table's middle position is an empty slot - if so, check the previous positions until we find the biggest word
+    while(table[middle].word.empty() && middle >= hashFuncTable[start])
+        middle--;
+
+    // check if the current hashed word is the one we are searching for.
+    if (table[middle].word.compare(word) == 0) {
+        //std::cout << "We found the word " << word << " at position: " << middle << " of the table. It is found " << table[middle].occurencies << " times in the text." << std::endl;
+        return middle;
+    }
+    else {
+        // we did not find the word at the current position - check if the given word is less than the current and adjust the step accordingly
+        //std::cout << "We did not find the word " << word << std::endl;
+        if ( table[middle].word.compare(word) < 0 && !table[middle].word.empty())
+            step = 1; // the word, we are looking for, is in the next positions
+        else if (!table[middle].word.empty() && table[middle].word.compare(word) > 0)
+            step = -1; // the word, we are looking for, is in the previous positions
+
+        middle += step;
+        // checking if the position to be search doesn't exceed the table's size or the starting/finishing position of the words starting with the same letter
+        while(middle < totalSize && middle >= hashFuncTable[start] && middle < hashFuncTable[finish] && !table[middle].word.empty()) {
+            // searching in the table
+            if(table[middle].word.compare(word) == 0)
+                return middle; // we found the word
+            // we did not find the word - go to the next position
+            middle += step;
+        }
+    }
+    // the word is not in the subtable, therefore the word doesn't exist in our hash table.
+    return -1;
 }
