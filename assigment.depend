@@ -1,17 +1,19 @@
 # depslib dependency file v1.0
-1623541416 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\src\avl_tree.cpp
+1624120540 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\src\avl_tree.cpp
 	"AVL_tree.h"
 
-1623541096 c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\include\avl_tree.h
+1624108153 c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\include\avl_tree.h
 	<string>
 	<iostream>
+	<fstream>
 
-1623541472 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\src\binary_tree.cpp
+1624120672 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\src\binary_tree.cpp
 	"binary_tree.h"
 
-1623541145 c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\include\binary_tree.h
+1624120618 c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\include\binary_tree.h
 	<string>
 	<iostream>
+	<fstream>
 
 1623588658 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\src\hash_map.cpp
 	"hash_map.h"
@@ -20,32 +22,39 @@
 	<string>
 	<iostream>
 
-1623541096 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\src\ordered_table.cpp
+1624120698 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\src\ordered_table.cpp
 	"ordered_table.h"
 
-1623448311 c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\include\ordered_table.h
+1624120667 c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\include\ordered_table.h
 	<string>
 	<iostream>
+	<fstream>
 
-1623690791 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\main.cpp
+1624120540 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\main.cpp
 	<iostream>
+	<fstream>
+	<string>
+	<chrono>
+	<algorithm>
+	<ctype.h>
 	"unordered_table.h"
 	"ordered_table.h"
 	"binary_tree.h"
 	"AVL_tree.h"
 	"hash_table.h"
 
-1623541096 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\src\unordered_table.cpp
+1624120667 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\src\unordered_table.cpp
 	"unordered_table.h"
 
-1623448230 c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\include\unordered_table.h
+1624120667 c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\include\unordered_table.h
 	<string>
 	<iostream>
+	<fstream>
 
-1623692439 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\src\hash_table.cpp
+1624116630 source:c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\src\hash_table.cpp
 	"hash_table.h"
 
-1623689472 c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\include\hash_table.h
+1624108122 c:\users\riot\documents\codeblocks\domes dedomenwn\assigment\include\hash_table.h
 	<string>
 	<iostream>
 

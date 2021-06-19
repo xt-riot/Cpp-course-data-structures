@@ -20,31 +20,32 @@ class hash_table(): Implementation of the hash table data structure. A helping t
                     addition of new slots every time we run out of empty slots in a given subtable.
     public:
         -hash_table():          instatiate the hash table to store every word(Open addressing hasing:
-                                    every word is stored in this hash table).
+                                    every word is stored in this hash table)
                                 instatiate a helping table to store the starting/finishing positions of
-                                    a subtable.
-        -~hash_table():         delete the table.
+                                    a subtable
+        -~hash_table():         delete the table
         -addWord(std::string):  Add the given word in the hash table
         -findWord(std::string): Search for the given word in the hash table. Return the position in
-                                    the table.
+                                    the table
         -printTable():          Print the non-empty slots of the hash table
+        -getDesc():             Return the description of the structure
 
     protected:
         -hashFunc(int):         Hashing function - arguments: the first letter of the word, as an int
                                     returns the corresponding position in the helping table
         -reconstruct():         Called when there are no empty slots left in a subtable - adds 10 new
                                     slots in every subtable which has 1 or less empty slot.
-                                    returns the new hash table.
+                                    returns the new hash table
         -sortSlots(dataHM):     Sorting algorithm to sort every word in their subtable.
-                                    returns the sorted hash table.
+                                    returns the sorted hash table
 
     private:
-        -dataHM *table:         The hash table storing the words.
-        -int *hashFuncTable:    The helping table storing the starting/finish positions of every letter.
-        -int totalSize:         The total size of the hash table.
+        -dataHM *table:         The hash table storing the words
+        -int *hashFuncTable:    The helping table storing the starting/finish positions of every letter
+        -int totalSize:         The total size of the hash table
 
     Helping data structure:
-        struct dataHM:          A data structure storing the word and how many times it's found in the text.
+        struct dataHM:          A data structure storing the word and how many times it's found in the text
 *******************************************************************************************************************/
 
 
@@ -57,7 +58,8 @@ hash_table::hash_table()
     // instatiating hash table to a multiple of the total number of the letters in the alphabet
     // this way, each letter will have X free space before reconstructing the table
     // used to limit the number of times we copy the table to a new one
-    std::cout << "Hash Table constructor." << std::endl;
+    //std::cout << "Hash Table constructor." << std::endl;
+    description = "hash-table";
     hashFuncTable = new int[ALPHABET_TOTALNUMBER];
     totalSize = ALPHABET_TOTALNUMBER * 5;
     table = new dataHM[totalSize];
@@ -66,6 +68,12 @@ hash_table::hash_table()
     for(int i = 0; i<ALPHABET_TOTALNUMBER; i++)
         hashFuncTable[i] = i * (totalSize / ALPHABET_TOTALNUMBER);
 }
+
+std::string hash_table::getDesc()
+{
+    return description;
+}
+
 
 void hash_table::addWord(std::string word)
 {

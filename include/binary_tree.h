@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 
 struct data {
     std::string word;
@@ -21,25 +22,28 @@ class binary_tree
         binary_tree();
         virtual ~binary_tree();
 
-        void addWord(std::string word);
-        void deleteWord(std::string word);
-        void findWord(std::string word);
+        void addWord(std::string);
+        void deleteWord(std::string);
+        void findWord(std::string);
         void inorder();
         void preorder();
         void postorder();
 
+        std::string getDesc();
+
     protected:
-        node* insertNewNode(data key, node *root);
-        node* newPointer(data key, node *root);
-        node* searchNode(std::string key, node *root);
-        node* deleteNode(std::string key, node *root);
-        void inorder(node *root);
-        void preorder(node *root);
-        void postorder(node *root);
-        void deconstructor(node* root);
+        node* insertNewNode(data, node*);
+        node* newPointer(data, node*);
+        node* searchNode(std::string, node*);
+        node* deleteNode(std::string, node*);
+        void inorder(node*);
+        void preorder(node*);
+        void postorder(node*);
+        void deconstructor(node*);
 
     private:
         node *tree;
+        std::string description;
 };
 
 #endif // BINARY_TREE_H

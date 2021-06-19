@@ -1,0 +1,2 @@
+Printing unordered table...0
+Total table size: 0

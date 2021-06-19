@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 
 struct dataAVL {
     std::string word;
@@ -27,6 +28,7 @@ class AVL_tree
         void inorder();
         void preorder();
         void postorder();
+        std::string getDesc();
 
     protected:
         nodeAVL* insertNewNode(dataAVL key, nodeAVL *root);
@@ -48,6 +50,7 @@ class AVL_tree
 
     private:
         nodeAVL *tree;
+        std::string description;
 };
 
 #endif // AVL_TREE_H

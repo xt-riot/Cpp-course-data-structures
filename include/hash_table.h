@@ -18,6 +18,7 @@ class hash_table
         void addWord(std::string word);
         int findWord(std::string word);
         void printTable();
+        std::string getDesc();
 
     protected:
         int hashFunc(int letter);
@@ -28,6 +29,7 @@ class hash_table
         dataHM *table;
         int *hashFuncTable;
         int totalSize;
+        std::string description;
 };
 
 #endif // HASH_TABLE_H

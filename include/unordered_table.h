@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 
 class unordered_table
 {
@@ -10,13 +11,15 @@ class unordered_table
         unordered_table();
         virtual ~unordered_table();
 
-        void addWord(std::string word);
-        bool deleteWord(std::string word);
-        int findWord(std::string word, int start);
+        void addWord(std::string);
+        bool deleteWord(std::string);
+        int findWord(std::string);
 
+        std::string getDesc();
         void printTable();
 
     protected:
+        int findWordProt(std::string);
 
     private:
         int totalSize;
@@ -25,6 +28,7 @@ class unordered_table
             int occurencies;
         };
         data *table;
+        std::string description;
 };
 
 #endif // UNORDERED_TABLE_H
